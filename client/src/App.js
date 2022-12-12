@@ -4,7 +4,7 @@ import Map from "./components/Map";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
-const baseUrl = "http://localhost:5100";
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 function App() {
   const [existingCoordinates, setExistingCoordinates] = useState([]);
