@@ -4,6 +4,7 @@ const CoverageSchema = new mongoose.Schema({
   router_number: {
     type: String,
     unique: true,
+    minLength: [4, "Router number should atleast be more than 4 characters"],
     required: [true, "Please add a router number"],
   },
 
