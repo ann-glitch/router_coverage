@@ -14,7 +14,7 @@ body {
   top: 50%;
   left: 89%;
   width: 350px;
-  padding: 40px;
+  padding: 30px;
   transform: translate(-50%, -50%);
   box-sizing: border-box;
   border-radius: 10px;
@@ -139,3 +139,8 @@ input:checked + .slider:before {
   color: #fcfcfc;
 }
 
+.error-message {
+  color: rgb(213, 13, 13);
+  font-weight: 900;
+  font-size: 12px;
+}

@@ -1,4 +1,10 @@
-const RouterForm = ({ formData, handleInput, handleStatus, handleSubmit }) => {
+const RouterForm = ({
+  formData,
+  formErrors,
+  handleInput,
+  handleStatus,
+  handleSubmit,
+}) => {
   return (
     <div className="form-box">
       <h2 className="heading"> Router Coverage </h2>
@@ -15,6 +21,7 @@ const RouterForm = ({ formData, handleInput, handleStatus, handleSubmit }) => {
               required
             />
           </label>
+          <p className="error-message">{formErrors.router_number}</p>
         </div>
 
         <div>
