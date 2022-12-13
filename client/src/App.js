@@ -8,12 +8,31 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 function App() {
   const [existingCoordinates, setExistingCoordinates] = useState([]);
+  const [isSubmit, setIsSubmit] = useState(false);
+  const [formErrors, setformErrors] = useState({});
   const [formData, setFormData] = useState({
     router_number: "",
     latitude: "",
     longitude: "",
     status: false,
   });
+
+  // useEffect(() => {
+  //   if (Object.keys(formErrors).length === 0 && isSubmit) {
+  //     console.log(formData);
+  //   }
+  // }, [formErrors, formData, isSubmit]);
+
+  //form validation
+  const formValidation = (formData) => {
+    let errors = {};
+
+    if (formData.router_number.length < 4) {
+      errors.router_number =
+        "Router number should atleast be more than 4 characters.";
+    }
+    return errors;
+  };
 
   /* helper functions for application */
   const handleInput = (e) => {
@@ -48,6 +67,8 @@ function App() {
   // handler for when the submit button is clicked
   const handleSubmit = (e) => {
     e.preventDefault();
+    setformErrors(formValidation(formData));
+    setIsSubmit(true);
 
     axios
       .post(`${baseUrl}/api/coverage`, formData)
@@ -69,6 +90,7 @@ function App() {
       />
       <RouterForm
         formData={formData}
+        formErrors={formErrors}
         handleInput={handleInput}
         handleStatus={handleStatus}
         handleSubmit={handleSubmit}
