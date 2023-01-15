@@ -79,8 +79,8 @@ function App() {
   }, []);
 
   return (
-    <GoogleOAuthProvider clientId="<your_client_id>">
-      <div>
+    <div>
+      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
         <Map
           coordinates={existingCoordinates}
           setCurrentLocation={setCurrentLocation}
@@ -105,8 +105,8 @@ function App() {
             }}
           />
         )}
-      </div>
-    </GoogleOAuthProvider>
+      </GoogleOAuthProvider>
+    </div>
   );
 }
 

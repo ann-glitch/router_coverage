@@ -72,11 +72,6 @@ const RouterForm = ({
         </div>
 
         <button>Submit</button>
-        <div>
-          <button>
-            <a href="http://localhost:5100/auth/google">AUTHENTICATE</a>
-          </button>
-        </div>
       </form>
     </div>
   );
