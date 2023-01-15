@@ -9,7 +9,7 @@ import { useState } from "react";
 const libraries = ["places"];
 
 const mapContainerStyle = {
-  width: "77vw",
+  width: "100vw",
   height: "100vh",
 };
 

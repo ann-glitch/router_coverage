@@ -9,11 +9,15 @@
   "license": "MIT",
   "dependencies": {
     "colors": "^1.4.0",
+    "connect-mongo": "^4.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-handler": "^1.2.0",
+    "express-session": "^1.17.3",
     "mongoose": "^6.6.5",
-    "nodemon": "^2.0.20"
+    "nodemon": "^2.0.20",
+    "passport": "^0.6.0",
+    "passport-google-oauth20": "^2.0.0"
   }
 }

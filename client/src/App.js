@@ -3,6 +3,7 @@ import RouterForm from "./components/RouterForm";
 import Map from "./components/Map";
 import { useState, useEffect } from "react";
 import axios from "axios";
+import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -10,18 +11,13 @@ function App() {
   const [existingCoordinates, setExistingCoordinates] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setformErrors] = useState({});
+  const [userIsAuthenticated, setuserIsAuthenticated] = useState(false);
   const [formData, setFormData] = useState({
     router_number: "",
     latitude: "",
     longitude: "",
     status: false,
   });
-
-  // useEffect(() => {
-  //   if (Object.keys(formErrors).length === 0 && isSubmit) {
-  //     console.log(formData);
-  //   }
-  // }, [formErrors, formData, isSubmit]);
 
   //form validation
   const formValidation = (formData) => {
@@ -83,19 +79,34 @@ function App() {
   }, []);
 
   return (
-    <div>
-      <Map
-        coordinates={existingCoordinates}
-        setCurrentLocation={setCurrentLocation}
-      />
-      <RouterForm
-        formData={formData}
-        formErrors={formErrors}
-        handleInput={handleInput}
-        handleStatus={handleStatus}
-        handleSubmit={handleSubmit}
-      />
-    </div>
+    <GoogleOAuthProvider clientId="<your_client_id>">
+      <div>
+        <Map
+          coordinates={existingCoordinates}
+          setCurrentLocation={setCurrentLocation}
+        />
+        {userIsAuthenticated && (
+          <RouterForm
+            formData={formData}
+            formErrors={formErrors}
+            handleInput={handleInput}
+            handleStatus={handleStatus}
+            handleSubmit={handleSubmit}
+          />
+        )}
+        {!userIsAuthenticated && (
+          <GoogleLogin
+            className="login-btn"
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+        )}
+      </div>
+    </GoogleOAuthProvider>
   );
 }
 
