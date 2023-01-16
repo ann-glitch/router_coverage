@@ -4,6 +4,7 @@ import Map from "./components/Map";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
+import jwt_decode from "jwt-decode";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -81,6 +82,19 @@ function App() {
   return (
     <div>
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
+        {!userIsAuthenticated && (
+          <GoogleLogin
+            className="login-btn"
+            onSuccess={(credentialResponse) => {
+              console.log(credentialResponse.credential);
+              let decoded = jwt_decode(credentialResponse.credential);
+              console.log(decoded);
+            }}
+            onError={() => {
+              console.log("Login Failed");
+            }}
+          />
+        )}
         <Map
           coordinates={existingCoordinates}
           setCurrentLocation={setCurrentLocation}
@@ -92,17 +106,6 @@ function App() {
             handleInput={handleInput}
             handleStatus={handleStatus}
             handleSubmit={handleSubmit}
-          />
-        )}
-        {!userIsAuthenticated && (
-          <GoogleLogin
-            className="login-btn"
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse);
-            }}
-            onError={() => {
-              console.log("Login Failed");
-            }}
           />
         )}
       </GoogleOAuthProvider>
