@@ -1,23 +1,18 @@
-const express = require("express");
-const router = express.Router();
-const passport = require("passport");
+const User = require("../models/User");
+const asyncHandler = require("express-async-handler");
+const { OAuth2Client } = require("google-auth-library");
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
-//google auth
-router.get(
-  "/google",
-  passport.authenticate("google", { scope: ["profile", "email"] })
-);
+exports.googleLogin = asyncHandler(async (req, res) => {
+  const { token } = req.body;
+  const ticket = await client.verifyIdToken({
+    idToken: token,
+    audience: process.env.GOOGLE_CLIENT_ID,
+  });
 
-//google callback
-router.get(
-  "/google/callback",
-  passport.authenticate("google", {
-    failureRedirect: "/",
-    failureMessage: true,
-  }),
-  (req, res) => {
-    res.redirect("/http://localhost:3000");
-  }
-);
+  const { name, email } = ticket.getPayload();
 
-module.exports = router;
+  const user = await User.create({ name, email });
+
+  res.status(200).json({ user });
+});

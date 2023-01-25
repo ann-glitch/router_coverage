@@ -4,7 +4,6 @@ import Map from "./components/Map";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -50,6 +49,17 @@ function App() {
     });
   };
 
+  //handle google auth login
+  const handleLogin = async (credentialResponse) => {
+    const response = await axios.post(
+      "http://localhost:5100/api/coverage/auth/login",
+      { token: credentialResponse.credential }
+    );
+    if (response.status === 200) {
+      setuserIsAuthenticated(true);
+    }
+  };
+
   function loadExistingCoordinates() {
     return axios
       .get(`${baseUrl}/api/coverage`)
@@ -85,11 +95,7 @@ function App() {
         {!userIsAuthenticated && (
           <GoogleLogin
             className="login-btn"
-            onSuccess={(credentialResponse) => {
-              console.log(credentialResponse.credential);
-              let decoded = jwt_decode(credentialResponse.credential);
-              console.log(decoded);
-            }}
+            onSuccess={handleLogin}
             onError={() => {
               console.log("Login Failed");
             }}

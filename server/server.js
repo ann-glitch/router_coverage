@@ -24,11 +24,11 @@ connectDB();
 
 //load route files
 const coverage = require("./routes/coverage");
-const auth = require("./controllers/auth");
+const auth = require("./routes/auth");
 
 //mount routers
 app.use("/api/coverage", coverage);
-app.use("/auth", auth);
+app.use("/api/coverage/auth", auth);
 
 //error handling
 app.use(errorHandler);
