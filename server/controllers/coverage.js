@@ -1,10 +1,11 @@
 const asyncHandler = require("express-async-handler");
 const Coverage = require("../models/Coverage");
 
-// @description Add router number, geocoordinates and status
-// @route POST /api/coverage
-// @access public
+// Add router number, geocoordinates and status
 exports.addRouterData = asyncHandler(async (req, res, next) => {
+  //add user to req.body
+  req.body.user = req.user.id;
+
   const routerData = await Coverage.create(req.body);
 
   res.status(201).json({
@@ -13,9 +14,7 @@ exports.addRouterData = asyncHandler(async (req, res, next) => {
   });
 });
 
-// @description Get router number, geocoordinates and status
-// @route GET /api/coverage
-// @access public
+//  Get router number, geocoordinates and status
 exports.getRouterData = asyncHandler(async (req, res, next) => {
   const routerData = await Coverage.find();
 

@@ -23,7 +23,7 @@ body {
 .form-box h2 {
   margin: 0 0 30px;
   padding: 0;
-  /* color: #fff; */
+  color: rgb(36, 35, 35);
   text-align: center;
 }
 
@@ -34,7 +34,6 @@ body {
   border: none;
   border-bottom: 1px solid rgb(206, 200, 200);
   outline: none;
-  /* background: black; */
   background: transparent;
   color: rgb(36, 35, 35);
 }
@@ -92,6 +91,7 @@ body {
 .para {
   font-size: 13px;
   color: rgb(133, 130, 130);
+  line-height: 1.6;
 }
 
 input:checked + .slider {
@@ -141,8 +141,16 @@ input:checked + .slider:before {
   font-size: 12px;
 }
 
-.login-btn {
-  position: absolute !important;
-  top: 50px;
-  right: 50px;
+.google-auth {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+}
+
+.router-btn {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

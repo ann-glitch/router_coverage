@@ -3,7 +3,6 @@ import RouterForm from "./components/RouterForm";
 import Map from "./components/Map";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
@@ -11,7 +10,6 @@ function App() {
   const [existingCoordinates, setExistingCoordinates] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setformErrors] = useState({});
-  const [userIsAuthenticated, setuserIsAuthenticated] = useState(false);
   const [formData, setFormData] = useState({
     router_number: "",
     latitude: "",
@@ -49,17 +47,6 @@ function App() {
     });
   };
 
-  //handle google auth login
-  const handleLogin = async (credentialResponse) => {
-    const response = await axios.post(
-      "http://localhost:5100/api/coverage/auth/login",
-      { token: credentialResponse.credential }
-    );
-    if (response.status === 200) {
-      setuserIsAuthenticated(true);
-    }
-  };
-
   function loadExistingCoordinates() {
     return axios
       .get(`${baseUrl}/api/coverage`)
@@ -91,30 +78,18 @@ function App() {
 
   return (
     <div>
-      <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
-        {!userIsAuthenticated && (
-          <GoogleLogin
-            className="login-btn"
-            onSuccess={handleLogin}
-            onError={() => {
-              console.log("Login Failed");
-            }}
-          />
-        )}
-        <Map
-          coordinates={existingCoordinates}
-          setCurrentLocation={setCurrentLocation}
-        />
-        {userIsAuthenticated && (
-          <RouterForm
-            formData={formData}
-            formErrors={formErrors}
-            handleInput={handleInput}
-            handleStatus={handleStatus}
-            handleSubmit={handleSubmit}
-          />
-        )}
-      </GoogleOAuthProvider>
+      <Map
+        coordinates={existingCoordinates}
+        setCurrentLocation={setCurrentLocation}
+      />
+
+      <RouterForm
+        formData={formData}
+        formErrors={formErrors}
+        handleInput={handleInput}
+        handleStatus={handleStatus}
+        handleSubmit={handleSubmit}
+      />
     </div>
   );
 }
