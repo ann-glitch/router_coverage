@@ -8,5 +8,11 @@
 yarn && npm start (on the client side).
 yarn && yarn dev (on the server side).
 ```
+
+## .env files
+
+Change the sample.env file in the server folder to config.env and the client's own to .env and replace the values with your own values.
+
 ---
-[Live Site](https://router-client.vercel.app/)
+
+[LIVE DEMO](https://router-client.vercel.app/)
