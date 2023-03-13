@@ -24,8 +24,7 @@ exports.googleLogin = asyncHandler(async (req, res) => {
     sendTokenResponse(user, 200, res);
   } else {
     const user = await User.create(newUser);
-
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 201, res);
   }
 });
 
@@ -50,6 +49,7 @@ const sendTokenResponse = (user, statusCode, res) => {
   });
 };
 
+// logout
 exports.logout = asyncHandler(async (req, res, next) => {
   res.cookie("token", "none", {
     expires: new Date(Date.now() + 10 * 1000),

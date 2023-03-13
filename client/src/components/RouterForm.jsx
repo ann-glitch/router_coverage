@@ -2,6 +2,8 @@ import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
 import { useState } from "react";
 import axios from "axios";
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const RouterForm = ({
   formData,
   formErrors,
@@ -13,10 +15,10 @@ const RouterForm = ({
 
   //handle google auth login
   const handleLogin = async (credentialResponse) => {
-    const response = await axios.post(
-      "http://localhost:5100/api/coverage/auth/login",
-      { token: credentialResponse.credential }
-    );
+    axios.defaults.withCredentials = true;
+    const response = await axios.post(`${baseUrl}/api/coverage/auth/login`, {
+      token: credentialResponse.credential,
+    });
     if (response.status === 200) {
       setuserIsAuthenticated(true);
     }
@@ -24,9 +26,7 @@ const RouterForm = ({
 
   //handle auth logout
   const handleLogout = async () => {
-    const response = await axios.post(
-      "http://localhost:5100/api/coverage/auth/logout"
-    );
+    const response = await axios.get(`${baseUrl}/api/coverage/auth/logout`);
     if (response.status === 200) {
       setuserIsAuthenticated(false);
     }

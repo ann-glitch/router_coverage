@@ -5,16 +5,24 @@ const cors = require("cors");
 const errorHandler = require("./middleware/error");
 const connectDB = require("./config/db");
 const session = require("express-session");
+const cookieParser = require("cookie-parser");
 const MongoStore = require("connect-mongo");
 
 const app = express();
 
 //enable cors
-app.use(cors());
+const corsOptions = {
+  origin: true,
+  credentials: true,
+};
+app.use(cors(corsOptions));
 
 // body-parser
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+//cookie-parser
+app.use(cookieParser());
 
 //load env vars
 dotenv.config({ path: "./config/config.env" });
