@@ -1,5 +1,6 @@
 import { GoogleLogin, GoogleOAuthProvider } from "@react-oauth/google";
-import { useState } from "react";
+import { useContext, useEffect } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
@@ -11,7 +12,8 @@ const RouterForm = ({
   handleStatus,
   handleSubmit,
 }) => {
-  const [userIsAuthenticated, setuserIsAuthenticated] = useState(false);
+  // const [userIsAuthenticated, setuserIsAuthenticated] = useState(false);
+  const { user, setUser } = useContext(AuthContext);
 
   //handle google auth login
   const handleLogin = async (credentialResponse) => {
@@ -19,16 +21,40 @@ const RouterForm = ({
     const response = await axios.post(`${baseUrl}/api/coverage/auth/login`, {
       token: credentialResponse.credential,
     });
-    if (response.status === 200) {
-      setuserIsAuthenticated(true);
-    }
+
+    localStorage.setItem("token", response.data.token);
+    setUser(response.data);
+    // if (response.status === 200) {
+    //   setuserIsAuthenticated(true);
+    // }
   };
+  console.log(user);
+  //keep user logged in
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (token) {
+      axios
+        .get(`${baseUrl}/api/coverage/auth/profile`, {
+          headers: {
+            "x-auth-token": token,
+          },
+        })
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, []);
 
   //handle auth logout
   const handleLogout = async () => {
     const response = await axios.get(`${baseUrl}/api/coverage/auth/logout`);
     if (response.status === 200) {
-      setuserIsAuthenticated(false);
+      // setuserIsAuthenticated(false);
+      setUser(null);
     }
   };
 
@@ -36,7 +62,7 @@ const RouterForm = ({
     <div className="form-box">
       <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_CLIENT_ID}>
         <h2 className="heading"> Router Coverage </h2>
-        {userIsAuthenticated && (
+        {user && (
           <form onSubmit={(e) => handleSubmit(e)}>
             <div className="router-number">
               <label className="form-label">
@@ -107,7 +133,7 @@ const RouterForm = ({
           </form>
         )}
 
-        {!userIsAuthenticated && (
+        {!user && (
           <div>
             <p className="para">
               <i>

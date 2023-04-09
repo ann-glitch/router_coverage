@@ -6,7 +6,7 @@ import axios from "axios";
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-function App() {
+const App = () => {
   const [existingCoordinates, setExistingCoordinates] = useState([]);
   const [isSubmit, setIsSubmit] = useState(false);
   const [formErrors, setformErrors] = useState({});
@@ -92,6 +92,6 @@ function App() {
       />
     </div>
   );
-}
+};
 
 export default App;
